@@ -1,6 +1,6 @@
 defmodule BankApi.Accounts.User do
   @moduledoc """
-  Schema User.
+  Provides schema from `user`.
   """
   use Ecto.Schema
   import Ecto.Changeset
@@ -20,22 +20,49 @@ defmodule BankApi.Accounts.User do
   end
 
   @doc """
-  Use changest to validate `BankApi.Accounts.User` as: User.
+  Changesets allow filtering, casting, validation and definition of constraints when manipulating structs.
 
   ## Examples
 
-    iex> User.changeset(%User{}, %{email: "JHoni@sousa", name: "jhoni", last_name: "sousa", password: "123", password_confirmation: "123"})
-
-  Insert value into users tables.
+      iex> User.changeset(%User{}, %{email: "JHoni@sousa", name: "jhoni",
+      last_name: "sousa", password: "123", password_confirmation: "123"})
+      #Ecto.Changeset<
+      action: nil,
+      changes: %{
+        email: "jhoni@sousa",
+        last_name: "sousa",
+        name: "jhoni",
+        password: "123",
+        password_confirmation: "123",
+        password_hash: "$argon2id$v=19$m=131072,t=8,p=4$hjFlb9SKys+UhCuDePppIA$KskjM3MbTC5Q/s/ZwotujYCYwVz6oMfBc4qOHeqpMTM"
+      },
+      errors: [],
+      data: #BankApi.Accounts.User<>,
+      valid?: true
+      >
 
   ## Examples
-    user = User.changeset(%User{}, %{email: "JHoni@sousa", name: "jhoni", last_name: "sousa", password: "123", password_confirmation: "123"})
-    iexs> BankApi.Repo.insert!(user)
+    Insert value into `users` tables.
+      iex> user = User.changeset(%User{}, %{email: "JHoni@sousa", name: "jhoni",
+      last_name: "sousa", password: "123", password_confirmation: "123"})
 
-  Returns data from table.
+      iex> BankApi.Repo.insert!(user)
+      %BankApi.Accounts.User{
+      __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+      email: "jhoni@sousa",
+      id: "e0c4ba79-6a02-4ab9-97f6-c09f903091d1",
+      inserted_at: ~N[2020-07-25 20:58:01],
+      last_name: "sousa",
+      name: "jhoni",
+      password: "123",
+      password_confirmation: "123",
+      password_hash: "$argon2id$v=19$m=131072,t=8,p=4$hjFlb9SKys+UhCuDePppIA$KskjM3MbTC5Q/s/ZwotujYCYwVz6oMfBc4qOHeqpMTM",
+      role: "user",
+      updated_at: ~N[2020-07-25 20:58:01]}
 
   ## Example
-    iex> BankApi.Repo.all(User)
+    Return data from database.
+      iex> BankApi.Repo.all(User)
 
   """
   def changeset(user, attrs) do

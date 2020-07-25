@@ -10,7 +10,18 @@ defmodule BankApi.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "BankApi",
+      source_url: "https://github.com/jhonisds/bank_api",
+      # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
+      docs: [
+        # The main page in the docs
+        main: "BankApi",
+        # logo: "path/to/logo.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -45,7 +56,8 @@ defmodule BankApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 5.3"},
       {:argon2_elixir, "~> 2.3"},
-      {:credo, "~> 1.4"}
+      {:credo, "~> 1.4"},
+      {:ex_doc, "~> 0.22.2", only: :dev, runtime: false}
     ]
   end
 
