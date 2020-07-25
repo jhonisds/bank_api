@@ -5,6 +5,8 @@ defmodule BankApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @derive {Phoenix.Param, key: :id}
   schema "users" do
     field :email, :string
     field :name, :string
@@ -17,6 +19,25 @@ defmodule BankApi.Accounts.User do
     timestamps()
   end
 
-  def changeset() do
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :email,
+      :name,
+      :last_name,
+      :password,
+      :password_confirmation,
+      :role
+    ])
+    |> validate_required([
+      :email,
+      :name,
+      :last_name,
+      :password,
+      :password_confirmation,
+      :role
+    ])
+    |> validate_format(:email, ~r/@/, message: "email format invalid.")
+    |> update_change(:email, &String.downcase(&1))
   end
 end
