@@ -9,3 +9,5 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+# User.changeset(%User{}, %{email: "JHoni@sousa", name: "jhoni", last_name: "sousa", password: "123", password_confirmation: "123"})
