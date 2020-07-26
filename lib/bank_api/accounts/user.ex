@@ -12,6 +12,8 @@ defmodule BankApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias BankApi.Accounts.Account
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
   schema "users" do
@@ -22,6 +24,8 @@ defmodule BankApi.Accounts.User do
     field :password_confirmation, :string, virtual: true
     field :password_hash, :string
     field :role, :string, default: "user"
+
+    has_one :accounts, Account
 
     timestamps()
   end
