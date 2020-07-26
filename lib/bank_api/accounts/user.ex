@@ -1,6 +1,13 @@
 defmodule BankApi.Accounts.User do
   @moduledoc """
   Provides schema from `user`.
+    * email
+    * name
+    * last_name
+    * password
+    * password_confirmation
+    * password_hash
+    * role
   """
   use Ecto.Schema
   import Ecto.Changeset
