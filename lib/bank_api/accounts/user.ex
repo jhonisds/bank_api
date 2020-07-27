@@ -94,11 +94,15 @@ defmodule BankApi.Accounts.User do
       :password_confirmation,
       :role
     ])
-    |> validate_format(:email, ~r/@/, message: "Email format invalid.")
+    |> validate_format(:email, ~r/@/, message: "email format is invalid.")
     |> update_change(:email, &String.downcase(&1))
-    |> validate_length(:password, min: 3, max: 6, message: "Password lenght between 3 and 6.")
-    |> validate_confirmation(:password, message: "Password should be the same.")
-    |> unique_constraint(:email, message: "Email aready exist.")
+    |> validate_length(:password,
+      min: 3,
+      max: 6,
+      message: "password lenght should be between 3 and 6."
+    )
+    |> validate_confirmation(:password, message: "the password should be the same.")
+    |> unique_constraint(:email, message: "this email already exist.")
     |> hash_password()
   end
 

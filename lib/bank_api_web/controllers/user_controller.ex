@@ -6,11 +6,13 @@ defmodule BankApiWeb.UserController do
 
   alias BankApi.Accounts
 
-  def signup(conn, %{"user" => user}) do
-    {:ok, account} = Accounts.create_user(user)
+  action_fallback BankApiWeb.FallbackController
 
-    conn
-    |> put_status(:created)
-    |> render("account.json", %{account: account})
+  def signup(conn, %{"user" => user}) do
+    with {:ok, user, account} <- Accounts.create_user(user) do
+      conn
+      |> put_status(:created)
+      |> render("account.json", %{user: user, account: account})
+    end
   end
 end
