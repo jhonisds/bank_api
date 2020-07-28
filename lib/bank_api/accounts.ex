@@ -53,4 +53,41 @@ defmodule BankApi.Accounts do
     %User{}
     |> User.changeset(attrs)
   end
+
+  @doc """
+  Returns user by id.
+
+  ## Examples
+      iex> Accounts.get_user!("37eeb24a-d4c3-4eb3-8c0a-1549bb6c485e")
+
+      %BankApi.Accounts.User{
+        __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+        accounts: %BankApi.Accounts.Account{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "accounts">,
+          balance: #Decimal<1000.00>,
+          id: "37ff9dc5-8fe5-43d9-9973-989cb87525a4",
+          inserted_at: ~N[2020-07-28 21:52:24],
+          updated_at: ~N[2020-07-28 21:52:24],
+          user: #Ecto.Association.NotLoaded<association :user is not loaded>,
+          user_id: "37eeb24a-d4c3-4eb3-8c0a-1549bb6c485e"
+        },
+        email: "jhoni@accurate.com.br",
+        id: "37eeb24a-d4c3-4eb3-8c0a-1549bb6c485e",
+        inserted_at: ~N[2020-07-28 21:52:24],
+        last_name: "Santos",
+        name: "Jhoni",
+        password: nil,
+        password_confirmation: nil,
+        password_hash: "$argon2id$v=19$m=131072,t=8,p=4$nK3YdwjBj2mOZSrI2jKx6w$QvbcomFrvnKE7lD4NBHgHCqDyCJWIaB23dJsl5RckgA",
+        role: "user",
+        updated_at: ~N[2020-07-28 21:52:24]
+      }
+
+  """
+  def get_user!(id), do: Repo.get(User, id) |> Repo.preload(:accounts)
+
+  @doc """
+  Returns all users from database.
+  """
+  def get_users(), do: Repo.all(User) |> Repo.preload(:accounts)
 end
