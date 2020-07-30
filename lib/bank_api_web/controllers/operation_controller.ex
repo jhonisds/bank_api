@@ -4,12 +4,14 @@ defmodule BankApiWeb.OperationController do
   """
   use BankApiWeb, :controller
 
-  def transfer(conn, %{"from_account_id" => f_id, "to_account_id" => t_id, "value" => value}) do
-    IO.inspect(t_id)
-    IO.inspect(t_id)
-    IO.inspect(value)
+  alias BankApiWeb.Operation
 
-    conn
-    |> render("success.json", message: "transfer executed")
+  action_fallback BankApiWeb.FallbackController
+
+  def transfer(conn, %{"from_account_id" => f_id, "to_account_id" => t_id, "value" => value}) do
+    with {:ok, message} <- Operation.transfer(f_id, t_id, value) do
+      conn
+      |> render("success.json", message: message)
+    end
   end
 end
