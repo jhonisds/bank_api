@@ -4,6 +4,7 @@ defmodule BankApi.Operations do
   """
 
   alias BankApi.{Accounts, Accounts.Account}
+  # alias BankApi.Accounts.Account
   alias BankApi.Repo
 
   def transfer(f_id, t_id, value) do
@@ -46,6 +47,6 @@ defmodule BankApi.Operations do
 
   def update_account(%Account{} = account, attrs) do
     Account.changeset(account, attrs)
-    |> Repo.update!()
+    |> Repo.update()
   end
 end
