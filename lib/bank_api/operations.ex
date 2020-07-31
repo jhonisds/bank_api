@@ -4,7 +4,6 @@ defmodule BankApi.Operations do
   """
 
   alias BankApi.{Accounts, Accounts.Account}
-  # alias BankApi.Accounts.Account
   alias BankApi.Repo
 
   def transfer(f_id, t_id, value) do
