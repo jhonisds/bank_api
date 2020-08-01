@@ -28,7 +28,10 @@ defmodule BankApi.Operations do
         {:error, "you can't have negative balance"}
 
       false ->
-        {:ok, from} = perform_operation(from, value, :sub)
+        {:ok, from} =
+          perform_operation(from, value, :sub)
+          |> Repo.update()
+
         {:ok, "withdraw with success! from: #{from.id}, value #{value}"}
     end
   end
@@ -39,13 +42,24 @@ defmodule BankApi.Operations do
   end
 
   def perform_update(from, t_id, value) do
-    {:ok, from} = perform_operation(from, value, :sub)
+    to = Accounts.get!(t_id)
 
-    {:ok, to} =
-      Accounts.get!(t_id)
-      |> perform_operation(value, :sum)
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:account_from, perform_operation(from, value, :sub))
+      |> Ecto.Multi.update(:account_to, perform_operation(from, value, :sum))
+      |> Repo.transaction()
 
-    {:ok, "Transfer with success! from: #{from.id} to: #{to.id} value: #{value}"}
+    case transaction do
+      {:ok, _} ->
+        {:ok, "Transfer with success! from: #{from.id} to: #{to.id} value: #{value}"}
+
+      {:error, :account_from, changeset, _} ->
+        {:error, changeset}
+
+      {:error, :account_to, changeset, _} ->
+        {:error, changeset}
+    end
   end
 
   def perform_operation(account, value, :sum) do
@@ -60,6 +74,5 @@ defmodule BankApi.Operations do
 
   def update_account(%Account{} = account, attrs) do
     Account.changeset(account, attrs)
-    |> Repo.update()
   end
 end
