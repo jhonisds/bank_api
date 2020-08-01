@@ -19,6 +19,20 @@ defmodule BankApi.Operations do
     end
   end
 
+  def withdraw(f_id, value) do
+    from = Accounts.get!(f_id)
+    value = Decimal.new(value)
+
+    case is_negative?(from.balance, value) do
+      true ->
+        {:error, "you can't have negative balance"}
+
+      false ->
+        {:ok, from} = perform_operation(from, value, :sub)
+        {:ok, "withdraw with success! from: #{from.id}, value #{value}"}
+    end
+  end
+
   def is_negative?(from_balance, value) do
     Decimal.sub(from_balance, value)
     |> Decimal.negative?()
